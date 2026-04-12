@@ -1,0 +1,34 @@
+const { nanoid } = require("nanoid");
+const ShortURLModel = require("../models/index");
+
+const postURl = async (req, res) => {
+  const body = req.body;
+  if (!body.url) {
+    return res.status(400).json({ error: "URL is required.." });
+  }
+  const shortID = nanoid(8);
+  await ShortURLModel.create({
+    ShortId: shortID,
+    RedirectURl: body.url,
+    Visit_History: [],
+  });
+
+  return res.json({ id: shortID });
+};
+
+
+const getURLAnalytics = async (req, res) => {
+  const ShortId = req.params.shortId;
+  console.log(ShortId);
+  const result = await ShortURLModel.find({ ShortId });
+
+  return res.json({
+    total_Clicks: result.Visit_History.length,
+    analytics: result.Visit_History,
+  });
+};
+
+module.exports = {
+  postURl,
+  getURLAnalytics,
+};
