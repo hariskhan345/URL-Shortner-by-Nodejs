@@ -1,6 +1,13 @@
 const { nanoid } = require("nanoid");
 const ShortURLModel = require("../models/index");
 
+const getAllurls = async (req, res) => {
+  const Allrls = await ShortURLModel.find({});
+  return res.render("home", {
+    allURLs: Allrls,
+  });
+};
+
 const postURl = async (req, res) => {
   const body = req.body;
   if (!body.url) {
@@ -13,9 +20,10 @@ const postURl = async (req, res) => {
     Visit_History: [],
   });
 
-  return res.json({ id: shortID });
+  return res.render("home", {
+    id: shortID,
+  });
 };
-
 
 const getURLAnalytics = async (req, res) => {
   const ShortId = req.params.shortId;
@@ -29,6 +37,7 @@ const getURLAnalytics = async (req, res) => {
 };
 
 module.exports = {
+  getAllurls,
   postURl,
   getURLAnalytics,
 };

@@ -3,9 +3,347 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
+    <title>URL Shortener</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #f4f6fb;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 48px 16px;
+        color: #1a1d23;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 780px;
+      }
+
+      .header {
+        margin-bottom: 32px;
+      }
+
+      .header h1 {
+        font-size: 26px;
+        font-weight: 600;
+        color: #1a1d23;
+        letter-spacing: -0.3px;
+      }
+
+      .header p {
+        font-size: 14px;
+        color: #6b7280;
+        margin-top: 4px;
+      }
+
+      .card {
+        background: #ffffff;
+        border-radius: 14px;
+        border: 1px solid #e5e7eb;
+        padding: 28px;
+        margin-bottom: 24px;
+      }
+
+      .card-title {
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: #6b7280;
+        margin-bottom: 16px;
+      }
+
+      .form-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .form-row input[type="text"] {
+        flex: 1;
+        height: 44px;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 9px;
+        padding: 0 14px;
+        font-size: 14px;
+        color: #1a1d23;
+        background: #f9fafb;
+        outline: none;
+        transition: border-color 0.18s, box-shadow 0.18s;
+      }
+
+      .form-row input[type="text"]:focus {
+        border-color: #4f6ef7;
+        box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.12);
+        background: #fff;
+      }
+
+      .form-row input[type="text"]::placeholder {
+        color: #adb5bd;
+      }
+
+      .btn {
+        height: 44px;
+        padding: 0 22px;
+        border-radius: 9px;
+        border: none;
+        background: #4f6ef7;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.18s, transform 0.1s;
+        white-space: nowrap;
+      }
+
+      .btn:hover {
+        background: #3a57e8;
+      }
+      .btn:active {
+        transform: scale(0.97);
+      }
+
+      .success-banner {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 24px;
+      }
+
+      .success-banner .icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #16a34a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .success-banner .icon svg {
+        width: 16px;
+        height: 16px;
+        fill: none;
+        stroke: #fff;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .success-banner .label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #15803d;
+      }
+
+      .success-banner .url-text {
+        font-size: 13px;
+        color: #166534;
+        word-break: break-all;
+      }
+
+      .success-banner a {
+        color: #15803d;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .success-banner a:hover {
+        text-decoration: underline;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      thead tr {
+        border-bottom: 1.5px solid #e5e7eb;
+      }
+
+      thead th {
+        text-align: left;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #9ca3af;
+        padding: 0 12px 12px;
+      }
+
+      thead th:first-child {
+        padding-left: 0;
+      }
+      thead th:last-child {
+        text-align: center;
+      }
+
+      tbody tr {
+        border-bottom: 1px solid #f3f4f6;
+        transition: background 0.12s;
+      }
+
+      tbody tr:last-child {
+        border-bottom: none;
+      }
+      tbody tr:hover {
+        background: #f9fafb;
+      }
+
+      tbody td {
+        padding: 13px 12px;
+        color: #374151;
+        vertical-align: middle;
+      }
+
+      tbody td:first-child {
+        padding-left: 0;
+        color: #9ca3af;
+        font-size: 13px;
+      }
+
+      tbody td:last-child {
+        text-align: center;
+      }
+
+      .short-id {
+        font-family: "Courier New", monospace;
+        font-size: 13px;
+        background: #f0f4ff;
+        color: #4f6ef7;
+        padding: 3px 9px;
+        border-radius: 6px;
+        font-weight: 600;
+        display: inline-block;
+      }
+
+      .redirect-url {
+        color: #374151;
+        font-size: 13px;
+        max-width: 280px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .clicks-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        height: 24px;
+        background: #f3f4f6;
+        border-radius: 99px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #374151;
+        padding: 0 8px;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 40px 0 20px;
+        color: #9ca3af;
+        font-size: 14px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Hello Server.....</h1>
+    <div class="container">
+      <div class="header">
+        <h1>URL Shortener</h1>
+        <p>Paste a long link and get a short one instantly.</p>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Shorten a URL</p>
+        <form action="/url" method="post">
+          <div class="form-row">
+            <input
+              type="text"
+              name="url"
+              placeholder="https://example.com/your-long-url-here"
+              autocomplete="off"
+            />
+            <button type="submit" class="btn">Generate</button>
+          </div>
+        </form>
+      </div>
+
+      <% if (locals.id) { %>
+      <div class="success-banner">
+        <div class="icon">
+          <svg viewBox="0 0 16 16">
+            <polyline points="2.5 8 6.5 12 13.5 4" />
+          </svg>
+        </div>
+        <div>
+          <p class="label">Short URL created</p>
+          <p class="url-text">
+            <a href="http://localhost:9000/<%= id %>" target="_blank">
+              http://localhost:9000/<%= id %>
+            </a>
+          </p>
+        </div>
+      </div>
+      <% } %>
+
+      <div class="card">
+        <p class="card-title">All short URLs</p>
+
+        <% if (locals.allURLs && allURLs.length > 0) { %>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Short ID</th>
+              <th>Redirects to</th>
+              <th>Clicks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% allURLs.forEach((url, index) => { %>
+            <tr>
+              <td><%= index + 1 %></td>
+              <td><span class="short-id"><%= url.ShortId %></span></td>
+              <td>
+                <span class="redirect-url" title="<%= url.RedirectURl %>"
+                  ><%= url.RedirectURl %></span
+                >
+              </td>
+              <td>
+                <span class="clicks-badge"
+                  ><%= url.Visit_History.length %></span
+                >
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <% } else { %>
+        <div class="empty-state">
+          No short URLs yet — create your first one above.
+        </div>
+        <% } %>
+      </div>
+    </div>
   </body>
 </html>
