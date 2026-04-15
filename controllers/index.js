@@ -2,7 +2,8 @@ const { nanoid } = require("nanoid");
 const ShortURLModel = require("../models/index");
 
 const getAllurls = async (req, res) => {
-  const Allrls = await ShortURLModel.find({});
+  if (!res.user) return res.redirect("/login");
+  const Allrls = await ShortURLModel.find({ createdBy: res.user._id });
   return res.render("home", {
     allURLs: Allrls,
   });
@@ -18,6 +19,7 @@ const postURl = async (req, res) => {
     ShortId: shortID,
     RedirectURl: body.url,
     Visit_History: [],
+    createdBy: res.user._id,
   });
 
   return res.render("home", {
