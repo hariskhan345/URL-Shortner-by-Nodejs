@@ -1,21 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SignUp</title>
-  </head>
-  <body>
-    <h1>Login.......</h1>
+    <title>Sign In | Premium Access</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
 
-    <form action="/user/login" method="post">
-      <label for="email">Enter your email:</label>
-      <input type="text" name="email" required />
+        body {
+            background-color: #f8fafc; 
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-      <label for="password">Enter your password:</label>
-      <input type="text" name="password" required />
+        .login-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 400px;
+            padding: 50px 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            border-top: 4px solid #1a1a1a;
+        }
 
-      <button type="submit">LogIn</button>
-    </form>
-  </body>
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #111827;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1a1a1a;
+            box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Primary Button */
+        .btn-login {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn-login:hover {
+            background-color: #000;
+            transform: translateY(-1px);
+        }
+
+        /* Divider styling */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 25px 0;
+            color: #9ca3af;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .divider:not(:empty)::before { margin-right: 15px; }
+        .divider:not(:empty)::after { margin-left: 15px; }
+
+        /* Secondary (Signup) Button */
+        .btn-signup {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            background-color: transparent;
+            color: #1a1a1a;
+            padding: 14px;
+            border: 1.5px solid #1a1a1a;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-signup:hover {
+            background-color: #f3f4f6;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="header">
+            <h1>Sign In</h1>
+            <p class="subtitle">Access your professional workspace</p>
+        </div>
+
+        <form action="/user/login" method="post">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="name@company.com" required />
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required />
+
+            <button type="submit" class="btn-login">Log In</button>
+        </form>
+
+        <div class="divider">Don't have an account?</div>
+
+        <a href="/signup" class="btn-signup">Create New Account</a>
+    </div>
+
+</body>
 </html>
