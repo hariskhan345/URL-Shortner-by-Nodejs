@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -10,9 +11,9 @@ const ShortURLModel = require("./models");
 const { UserRestrictionForAuth, checkUser } = require("./middleware/auth");
 
 const app = express();
-const PORT = 9000;
+const PORT = process.env.PORT;
 
-ConectMongoDb("mongodb://127.0.0.1:27017/ShortURL");
+ConectMongoDb(process.env.MONGO_URL);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
